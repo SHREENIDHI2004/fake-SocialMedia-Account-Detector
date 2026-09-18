@@ -59,6 +59,8 @@ Thumbs.db
 models/**/*.joblib
 models/**/*.pkl
 models/**/*.pickle
+!models/v1/model_pipeline.joblib
+!models/v1/calibrated_pipeline.joblib
 
 # FAISS vector index
 genai/rag/faiss_index.bin

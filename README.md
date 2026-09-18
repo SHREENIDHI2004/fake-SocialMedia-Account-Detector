@@ -1,70 +1,98 @@
 # Fake Social Media Account Detector
 
-## 1. Project overview
+The **Fake Social Media Account Detector** is an end-to-end machine learning system that evaluates social media profiles to determine their probability of being fake, bot-driven, or inauthentic. It combines a calibrated Random Forest classifier, SHAP feature attributions, a RAG knowledge base, and an optional GenAI narrative summary into a unified Flask API and interactive web interface.
 
-The Fake Social Media Account Detector is an end-to-end machine-learned classifier that scores social-media accounts (primarily Instagram-style profiles) on the probability that they are fake / bot / inauthentic. The project packages a calibrated supervised classifier, explainable AI (SHAP), a retrieval-augmented investigation knowledge base, and an optional Generative AI narrative assistant behind a Flask HTTP API plus a lightweight in-browser UI.
+---
 
-The classifier is trained on a labeled Kaggle Instagram fake-vs-real dataset and exposed via a simple JSON REST interface. Users submit account-level features (followers, following, posts, bio, profile flags) and receive:
+## 🚀 Key Features
 
-- A calibrated fake probability
-- A binary flag (flagged / not-flagged) under a configured threshold
-- Structured evidence (per-factor risk indicators)
-- Recommended next-step actions
-- Feature-level SHAP attributions (per-request explainability)
-- A RAG context window of knowledge-base snippets relevant to the signals
-- An optional LLM-generated natural-language investigation narrative (with deterministic fallback)
+- **Machine Learning Classification**: Trained supervised classifier scoring account authenticity from public metadata.
+- **Calibrated Risk Probabilities**: Isotonic calibration mapping raw outputs to true statistical probabilities.
+- **Explainable AI (SHAP)**: Per-request feature attribution highlighting positive and negative risk factors.
+- **RAG-Grounded Context**: Sentence-Transformers + FAISS semantic retrieval over an OSINT bot-investigation knowledge base.
+- **GenAI Investigation Narrative**: Natural-language summary synthesis with zero-dependency deterministic fallback.
+- **Versioned REST API & Single-Page UI**: Clean `/api/v1` REST endpoints and a modern dark-themed web interface.
+- **Automated Test Suite**: 93 unit and integration tests covering features, models, RAG, GenAI, and API routes.
 
-## 2. Problem statement
+---
 
-Fake, bot, and inauthentic social media accounts cause real harm: platform manipulation, spam/scam campaigns, astroturfed discourse, fraud, and brand impersonation. Platform-native signals (rate limits, device IDs, activity graphs) are not available to third-party auditors, so auditors must detect fakes from the limited surface exposed by public profile metadata.
+## 📊 Model Performance
 
-The project addresses exactly that constrained setting: given only public-profile, per-account fields, can a lightweight ML classifier reliably identify fakes while keeping false-positive rates low (to avoid flagging legitimate users)? A secondary goal is to make the decision process transparent and actionable for a human investigator via SHAP, RAG, and generated narrative rather than a bare score.
+Evaluated on an unbiased **120-row frozen holdout test set** (60 fake / 60 legitimate) never seen during tuning or selection:
 
-## 3. Key features
+| Metric | Value | Details |
+|---|---|---|
+| **Accuracy** | **87.5%** | 105 / 120 correct classifications |
+| **Precision** | **95.9%** | 47 / 49 flagged accounts are true fakes (FPR = 3.3%) |
+| **Recall** | **78.3%** | 47 / 60 fakes detected |
+| **F1 Score** | **86.2%** | Primary balanced optimization metric |
+| **ROC-AUC** | **0.9607** | High discriminative ranking performance |
+| **PR-AUC** | **0.9634** | Robust area under precision-recall curve |
+| **Brier Score** | **0.0962** | Low probability calibration error |
 
-- **Calibrated binary classifier** — Random Forest base learner with isotonic calibration. Probabilities can be thresholded with known error rates.
-- **Held-out 120-row frozen test set** — never used for hyperparameter tuning or model selection; provides unbiased estimate of production performance.
-- **Robust feature engineering pipeline** — hand-crafted numeric, text, ratio, and rule-signal features with NaN-safe coercions (JSON inputs with missing optional fields still classify).
-- **Multi-model comparison study** — 5 classifiers evaluated on 5-fold CV: Logistic Regression, Random Forest, Extra Trees, HistGradientBoosting, Gradient Boosting. Random Forest selected by best mean CV F1.
-- **SHAP explainability per request** — for every scored account the `/explain` endpoint returns ranked risk factors with signed SHAP value contributions.
-- **RAG investigation context** — sentence-transformers `all-MiniLM-L6-v2` embeddings + FAISS cosine-similarity retrieval over a knowledge base of 8 markdown documents covering account-age indicators, ratio heuristics, bot taxonomy, and investigation guidance. Graceful TF-IDF fallback if sentence-transformers is unavailable.
-- **Generative AI investigation narrative** — optional OpenAI Chat Completions integration that synthesises score, evidence, and RAG snippets into a plain-English report. Gracefully disables when `GENAI_PROVIDER=none` or no API key is configured, with a deterministic heuristic narrative replacement.
-- **Flask API + inline single-file UI** — single Python deployment target; no separate build step for the UI; inline Jinja2 template with dark theme and form-based scoring.
-- **Rate-limited endpoints** — in-memory 60-second sliding-window rate limiter (default 30 req/min per IP).
-- **Full pytest suite** — 93 tests covering feature engineering, preprocessing, model loading + prediction, API endpoints, invalid inputs, GenAI/RAG graceful fallbacks, and the basic UI request flow.
+* **Training Set**: 576 labeled rows (Kaggle Bakhshandeh dataset).
+* **Cross-Validation**: 5-fold stratified CV during hyperparameter search.
 
-## 4. Architecture
+---
 
-```
-[ Browser/Client ]
-   │
-   ├── GET  /                  → Flask inline render_template_string (UI form)
-   └── POST /api/v1/{health,model,detect,explain,report}
-           │
-           ▼
-┌─────────────────────────────── Flask app ───────────────────────────────┐
-│  register_app blueprint on /api/v1  (app/api/v1.py)                     │
-│  • rate_limit decorator (in-memory per-IP dict, 60s window)             │
-│  • JSON payload validation (Pydantic v2 schemas with optional fallback) │
-└──────────┬──────────────────────────┬──────────────────────┬────────────┘
-           │ predict_account()        │ explain_account()    │ investigate_account()
-           ▼                          ▼                      ▼
-    ml/inference/predict.py   app/services/xai_service.py   app/services/investigation_service.py
-      │  ├─ build_feature_frame  shap.TreeExplainer (or        │  ├─ reuse prediction
-      │  ├─ preprocessing pipeline  KernelExplainer fallback)  │  ├─ reuse SHAP
-      │  └─ calibrated_pipeline.predict_proba()                │  ├─ genai/rag/retrieve.py (RAG)
-      ▼                                                         │  └─ _try_llm_narrative (GenAI)
-    RandomForest (sklearn) +                                     │
-    CalibratedClassifierCV (isotonic)                            └─ Fallback heuristic summary
-                                                                      (LLM unavailable path)
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TD
+    A[User / Client Input] --> B[Payload Validation & Feature Engineering]
+    B --> C[ColumnTransformer & Imputation Pipeline]
+    C --> D[Calibrated Random Forest Classifier]
+    D --> E[Risk Score & Binary Flag]
+    E --> F[SHAP Explainer - Feature Attributions]
+    E --> G[RAG Retrieval - FAISS Knowledge Base]
+    E --> H[GenAI Assistant / Heuristic Fallback]
+    F --> I[Flask REST API / Single-Page Web UI]
+    G --> I
+    H --> I
 ```
 
-Key runtime properties:
-- All model/data paths are resolved relative to `config.py` location; no absolute paths required.
-- Model artifacts are loaded once at first request and cached.
-- SHAP explainer is built lazily and cached.
-- RAG embedding bundle is built lazily and cached; FAISS index lives under `genai/rag/faiss_index.bin` (gitignored) and is rebuilt automatically if missing.
-- GenAI never blocks a response — timeout + retries are bounded, and all endpoints work with `GENAI_PROVIDER=none`.
+> **Architecture Notes**:
+> - **ML Model**: Primary engine responsible for core classification and probability estimation.
+> - **GenAI Narrative**: Explanatory UX layer that synthesizes evidence; it does **not** override or decide classifications.
+> - **RAG Layer**: Provides grounded contextual guidance from domain investigation documents.
+
+---
+
+## ⚡ Quick Start
+
+### 1. Clone & Setup
+```bash
+git clone https://github.com/SHREENIDHI2004/fake-SocialMedia-Account-Detector.git
+cd fake-SocialMedia-Account-Detector
+```
+
+### 2. Create Environment & Install Dependencies
+```bash
+python -m venv .venv
+# On Windows:
+.venv\Scripts\activate
+# On Linux/macOS:
+# source .venv/bin/activate
+
+pip install -r requirements.txt
+```
+
+### 3. Environment Configuration
+```bash
+copy .env.example .env
+```
+
+### 4. Run Application
+The pre-trained model artifacts (`models/v1/calibrated_pipeline.joblib`) are included in the repository. The application works **immediately out-of-the-box**:
+```bash
+python wsgi.py
+```
+- **Web UI**: Open `http://127.0.0.1:5000/` in your browser.
+- **Health Check**: `http://127.0.0.1:5000/api/v1/health`
+
+---
+
+## 1. Detailed Project Overview
 
 ## 5. ML methodology
 
