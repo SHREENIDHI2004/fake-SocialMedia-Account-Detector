@@ -1,0 +1,14 @@
+username,has_profile_pic,username_digit_ratio,fullname_words,fullname_digit_ratio,name_equals_username,bio_length,has_external_url,is_private,posts,followers,following,is_fake,data_source,dataset_split,display_name,bio,account_age_days,is_verified,y_true,y_pred,proba,abs_error
+test_85,1,0.56,1,0.56,1,20,0,0,34,309,250,1,kaggle_bakhshandeh,test,test_85,,,,1,0,0.0,1.0
+test_99,1,0.67,1,0.5,0,0,0,0,5,145,202,1,kaggle_bakhshandeh,test,test_99,,,,1,0,0.11053140096618357,0.8894685990338165
+test_103,1,0.48,1,0.0,0,0,0,0,16,100,162,1,kaggle_bakhshandeh,test,test_103,,,,1,0,0.11053140096618357,0.8894685990338165
+test_95,1,0.38,2,0.25,0,0,0,0,70,94,105,1,kaggle_bakhshandeh,test,test_95,,,,1,0,0.1138212250368181,0.8861787749631819
+test_116,1,0.4,1,0.0,0,0,0,0,4,150,164,1,kaggle_bakhshandeh,test,test_116,,,,1,0,0.1866628090943469,0.813337190905653
+test_97,1,0.33,1,0.0,0,0,0,0,81,75,55,1,kaggle_bakhshandeh,test,test_97,,,,1,0,0.24361308928036288,0.7563869107196372
+test_109,1,0.44,1,0.0,0,0,0,0,60,238,1381,1,kaggle_bakhshandeh,test,test_109,,,,1,0,0.2895805918490838,0.7104194081509162
+test_93,1,0.0,0,0.0,0,0,0,0,15,772,3239,1,kaggle_bakhshandeh,test,test_93,,,,1,0,0.2989207619905202,0.7010792380094798
+test_114,1,0.33,1,0.0,0,0,0,0,8,88,76,1,kaggle_bakhshandeh,test,test_114,,,,1,0,0.3329242796181149,0.6670757203818851
+test_81,1,0.89,1,1.0,0,0,0,0,8,341,2287,1,kaggle_bakhshandeh,test,test_81,,,,1,0,0.3387890647378964,0.6612109352621036
+test_105,1,0.88,1,1.0,0,0,0,0,23,227,776,1,kaggle_bakhshandeh,test,test_105,,,,1,0,0.3612098850325934,0.6387901149674067
+test_82,1,0.0,2,0.0,0,0,0,0,3,1789,6153,1,kaggle_bakhshandeh,test,test_82,,,,1,0,0.37570298583254963,0.6242970141674504
+test_86,1,0.0,3,0.0,0,58,0,0,4,1742,6172,1,kaggle_bakhshandeh,test,test_86,,,,1,0,0.37623159917818266,0.6237684008218174

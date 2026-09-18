@@ -24,11 +24,14 @@ wheels/
 *.egg
 
 # Configuration files with API keys
-config.py
+# NOTE: config.py itself may be committed ONLY when it contains NO secrets
+# and loads credentials via python-dotenv / environment variables.
+# .env files MUST NEVER be committed.
 .env
-*.env
+.env.*
+!.env.example
 
-# Instaloader session files
+# Instaloader session files / credentials
 instagram_session
 *_session
 
@@ -39,6 +42,7 @@ reports.log
 # IDE
 .vscode/
 .idea/
+.trae/
 *.swp
 *.swo
 *~
@@ -47,3 +51,40 @@ reports.log
 .DS_Store
 Thumbs.db
 
+# ------------------------------
+# Project-specific additions
+# ------------------------------
+
+# Trained ML models, calibrators, pickled pipelines
+models/**/*.joblib
+models/**/*.pkl
+models/**/*.pickle
+
+# FAISS vector index
+genai/rag/faiss_index.bin
+genai/rag/*.index
+
+# Downloaded datasets - do not commit raw Kaggle data
+# Instead, document sources in data/README.md
+data/kaggle_bakhshandeh/
+data/**/*.zip
+!data/**/README*
+
+# Generated reports (images / CSVs) — optionally commit after tagging a release
+reports/*.png
+reports/*.csv
+reports/*.txt
+reports/*.html
+
+# Local pytest cache
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+
+# Jupyter notebooks checkpoints / outputs
+.ipynb_checkpoints
+.ipynb_outputs/
+
+# HuggingFace / sentence-transformers local cache
+.cache/

@@ -1,0 +1,43 @@
+================================================================================
+ERROR ANALYSIS REPORT
+================================================================================
+
+Counts: TP=47 TN=58 FP=2 FN=13
+FPR (of genuine): 3.33%
+FNR (of fake):    21.67%
+
+--------------------------------------------------------------------------------
+FALSE POSITIVES (genuine accounts predicted as fake)
+--------------------------------------------------------------------------------
+  prob=0.752 | username=test_47 followers=87 following=40 posts=0 pic=1
+  prob=0.617 | username=test_1 followers=35 following=6 posts=3 pic=1
+
+  Possible causes: extreme follower/following ratio, missing bio, unverified small accounts
+
+--------------------------------------------------------------------------------
+FALSE NEGATIVES (fake accounts predicted as genuine)
+--------------------------------------------------------------------------------
+  prob=0.000 | username=test_85 followers=309 following=250 posts=34 pic=1
+  prob=0.111 | username=test_99 followers=145 following=202 posts=5 pic=1
+  prob=0.111 | username=test_103 followers=100 following=162 posts=16 pic=1
+  prob=0.114 | username=test_95 followers=94 following=105 posts=70 pic=1
+  prob=0.187 | username=test_116 followers=150 following=164 posts=4 pic=1
+  prob=0.244 | username=test_97 followers=75 following=55 posts=81 pic=1
+  prob=0.290 | username=test_109 followers=238 following=1381 posts=60 pic=1
+  prob=0.299 | username=test_93 followers=772 following=3239 posts=15 pic=1
+  prob=0.333 | username=test_114 followers=88 following=76 posts=8 pic=1
+  prob=0.339 | username=test_81 followers=341 following=2287 posts=8 pic=1
+  prob=0.361 | username=test_105 followers=227 following=776 posts=23 pic=1
+  prob=0.376 | username=test_82 followers=1789 following=6153 posts=3 pic=1
+  prob=0.376 | username=test_86 followers=1742 following=6172 posts=4 pic=1
+
+  Possible causes: fake accounts with normal profile/follower counts, no bio spam text
+
+--------------------------------------------------------------------------------
+MODEL IMPROVEMENT RECOMMENDATIONS (derived)
+--------------------------------------------------------------------------------
+  * Consider higher threshold or higher FPR cap to reduce false positives (currently 2)
+  * Add profile-verification / historical-activity features if available to reduce legitimate low-profile false alarms.
+  * Consider collecting more text/NLP features (bio word-level TF-IDF, username n-grams) to catch fakes that mimic genuine profile stats.
+  * Consider synthetic fake augmentation if ablation shows real-test improvement.
+  * Always manually investigate borderline cases (prob 0.40-0.60); see hard_cases.csv

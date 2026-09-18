@@ -1,0 +1,17 @@
+{
+  "available": false,
+  "message": "Kaggle dataset not downloaded. See data/README.md.",
+  "info": {
+    "available": false,
+    "kaggle_dir": "data/kaggle_bakhshandeh",
+    "train_rows": 0,
+    "test_rows": 0,
+    "train_test_username_overlap": 0,
+    "train_class_distribution": {},
+    "test_class_distribution": {},
+    "duplicates_train": 0,
+    "duplicates_test": 0,
+    "missing_values_train": {},
+    "missing_values_test": {}
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "n_total": 120,
+  "true_positives": 47,
+  "true_negatives": 58,
+  "false_positives": 2,
+  "false_negatives": 13,
+  "fp_rate_among_genuine": 0.03333333333333333,
+  "fn_rate_among_fake": 0.21666666666666667
+}

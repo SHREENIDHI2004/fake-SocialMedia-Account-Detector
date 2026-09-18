@@ -1,0 +1,2 @@
+username,has_profile_pic,username_digit_ratio,fullname_words,fullname_digit_ratio,name_equals_username,bio_length,has_external_url,is_private,posts,followers,following,is_fake,data_source,dataset_split,display_name,bio,account_age_days,is_verified,y_true,y_pred,proba,abs_error
+test_13,1,0.33,2,0.0,0,45,0,1,8,130,622,0,kaggle_bakhshandeh,test,test_13,,,,0,0,0.4621366439139501,0.4621366439139501

@@ -1,0 +1,20 @@
+{
+  "n_samples_test": 120,
+  "n_positive_test": 60,
+  "n_negative_test": 60,
+  "threshold": 0.5,
+  "accuracy": 0.875,
+  "precision": 0.9591836734693877,
+  "recall": 0.7833333333333333,
+  "f1": 0.8623853211009175,
+  "roc_auc": 0.9606944444444444,
+  "pr_auc": 0.9634040745605769,
+  "brier_score": 0.09619691157127569,
+  "tp": 47,
+  "fp": 2,
+  "tn": 58,
+  "fn": 13,
+  "fpr": 0.03333333333333333,
+  "fnr": 0.21666666666666667,
+  "calibration_used": "isotonic"
+}

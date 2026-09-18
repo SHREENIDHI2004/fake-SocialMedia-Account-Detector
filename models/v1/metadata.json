@@ -1,0 +1,52 @@
+{
+  "model_name": "random_forest",
+  "best_cv_f1": 0.9298162060144058,
+  "best_params": {
+    "clf__n_estimators": 300,
+    "clf__min_samples_leaf": 10,
+    "clf__max_features": "log2",
+    "clf__max_depth": 20,
+    "clf__class_weight": "balanced_subsample"
+  },
+  "preprocessor_params": {},
+  "random_state": 42,
+  "tuned_on_rows": 576,
+  "tuning_method": "RandomizedSearchCV n_iter=30 n_splits=5 on training split only",
+  "frozen_test_rows": 120,
+  "note": "Frozen test set was NOT used for any tuning or selection.",
+  "selected_threshold": 0.5,
+  "calibration_method": "isotonic",
+  "threshold_selection_method": "OOF CV max F1 under FPR cap 0.15",
+  "threshold_oof_metrics": {
+    "threshold": 0.5,
+    "precision": 0.9158249158249159,
+    "recall": 0.9444444444444444,
+    "f1": 0.9299145299145299,
+    "tp": 272.0,
+    "fp": 25.0,
+    "tn": 263.0,
+    "fn": 16.0,
+    "fpr": 0.08680555555555555,
+    "fnr": 0.05555555555555555
+  },
+  "test_metrics": {
+    "n_samples_test": 120,
+    "n_positive_test": 60,
+    "n_negative_test": 60,
+    "threshold": 0.5,
+    "accuracy": 0.875,
+    "precision": 0.9591836734693877,
+    "recall": 0.7833333333333333,
+    "f1": 0.8623853211009175,
+    "roc_auc": 0.9606944444444444,
+    "pr_auc": 0.9634040745605769,
+    "brier_score": 0.09619691157127569,
+    "tp": 47,
+    "fp": 2,
+    "tn": 58,
+    "fn": 13,
+    "fpr": 0.03333333333333333,
+    "fnr": 0.21666666666666667,
+    "calibration_used": "isotonic"
+  }
+}

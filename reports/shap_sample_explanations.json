@@ -1,0 +1,35 @@
+{
+  "explainer_available": true,
+  "first_fake_explanation": {
+    "available": true,
+    "risk_factors": [],
+    "positive_signals": [
+      {
+        "feature": "f19",
+        "shap_value": -0.07466324324654208,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "f11",
+        "shap_value": -0.07120388403696704,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "f13",
+        "shap_value": -0.05343704815713116,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "f21",
+        "shap_value": -0.0457951484729001,
+        "direction": "decreases_risk"
+      },
+      {
+        "feature": "f14",
+        "shap_value": -0.040743782247885156,
+        "direction": "decreases_risk"
+      }
+    ],
+    "shap_base_value": 0.0
+  }
+}
